@@ -256,7 +256,7 @@ namespace Курсова_Робота__Щоденник_
 
         }
 
-        private void searchButton_Click(object sender, EventArgs e)
+        private void searchButton_Click(object sender, EventArgs e) // Кнопка пошуку
         {
             // 1. Отримуємо дату, яку ти вибрав у searchTimePicker (тільки число, місяць, рік)
             DateTime targetDate = searchTimePicker.Value.Date;
@@ -283,7 +283,7 @@ namespace Курсова_Робота__Щоденник_
                         // 4. Порівнюємо дату в рядку з обраною датою
                         if (rowDate.Date == targetDate)
                         {
-                            
+
                             row.Selected = true;
 
                             // Якщо це перший знайдений рядок  прокручуємо таблицю до нього
@@ -298,7 +298,7 @@ namespace Курсова_Робота__Щоденник_
                 }
             }
 
-            
+
             if (!isFound)
             {
                 MessageBox.Show("Справ на вибрану дату не знайдено.", "Пошук");
@@ -306,6 +306,48 @@ namespace Курсова_Робота__Щоденник_
             else
             {
                 MessageBox.Show($"Знайдено та виділено справи на {targetDate.ToShortDateString()}", "Успіх");
+            }
+        }
+
+        private void cloneButton_Click(object sender, EventArgs e)
+        {
+            // 1. Перевіряємо, чи є виділені клітинки
+            if (dataGridView1.SelectedCells.Count > 0)
+            {
+                // Беремо індекс рядка, з якого хочемо копіювати (з першої виділеної клітинки)
+                int currentRowIndex = dataGridView1.SelectedCells[0].RowIndex;
+                DataGridViewRow sourceRow = dataGridView1.Rows[currentRowIndex];
+
+                if (sourceRow.IsNewRow) return;
+
+                // 2. Створюємо новий рядок
+                int newRowIndex = dataGridView1.Rows.Add();
+                DataGridViewRow newRow = dataGridView1.Rows[newRowIndex];
+
+                // 3. Список назв усіх твоїх стовпців
+                string[] columnNames = {
+            "TitleColumn", "DescColumn", "PlaceColumn",
+            "DateOfColumn", "TimeOfColumn", "DurationColumn", "DateOfEnding"
+        };
+
+                // 4. Проходимо по кожному стовпцю
+                foreach (string colName in columnNames)
+                {
+                    // Перевіряємо, чи виділив користувач саме цю клітинку в початковому рядку
+                    if (sourceRow.Cells[colName].Selected)
+                    {
+                        // Копіюємо значення, тільки якщо клітинка була виділена
+                        newRow.Cells[colName].Value = sourceRow.Cells[colName].Value;
+                    }
+                }
+
+                // 5. Візуальне підтвердження
+                dataGridView1.ClearSelection();
+                newRow.Selected = true;
+            }
+            else
+            {
+                MessageBox.Show("Виділіть клітинки, які ви хочете продублювати!", "Увага");
             }
         }
     }

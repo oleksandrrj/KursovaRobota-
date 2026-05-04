@@ -48,6 +48,7 @@
             TimeOfColumn = new DataGridViewTextBoxColumn();
             DurationColumn = new DataGridViewTextBoxColumn();
             DateOfEnding = new DataGridViewTextBoxColumn();
+            cloneButton = new Button();
             ((System.ComponentModel.ISupportInitialize)DiaryButton).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             PanelOfButton.SuspendLayout();
@@ -156,11 +157,12 @@
             // panel1
             // 
             panel1.BackColor = Color.FromArgb(252, 255, 242);
+            panel1.Controls.Add(cloneButton);
             panel1.Controls.Add(deleteButton);
             panel1.Controls.Add(editButton);
             panel1.Location = new Point(15, 323);
             panel1.Name = "panel1";
-            panel1.Size = new Size(201, 125);
+            panel1.Size = new Size(201, 173);
             panel1.TabIndex = 1;
             // 
             // deleteButton
@@ -264,6 +266,17 @@
             DateOfEnding.SortMode = DataGridViewColumnSortMode.NotSortable;
             DateOfEnding.Width = 125;
             // 
+            // cloneButton
+            // 
+            cloneButton.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            cloneButton.Location = new Point(38, 125);
+            cloneButton.Name = "cloneButton";
+            cloneButton.Size = new Size(120, 29);
+            cloneButton.TabIndex = 2;
+            cloneButton.Text = "Дублювати";
+            cloneButton.UseVisualStyleBackColor = true;
+            cloneButton.Click += cloneButton_Click;
+            // 
             // DiaryMain
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -309,5 +322,6 @@
         private Panel panel3;
         private Button searchButton;
         private DateTimePicker searchTimePicker;
+        private Button cloneButton;
     }
 }
