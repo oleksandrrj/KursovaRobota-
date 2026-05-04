@@ -350,5 +350,98 @@ namespace Курсова_Робота__Щоденник_
                 MessageBox.Show("Виділіть клітинки, які ви хочете продублювати!", "Увага");
             }
         }
+
+        private void IntervalTimeBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void startButton_Click(object sender, EventArgs e)
+        {
+            // Перевіряємо формат 00:00 у полі IntervalTimeBox
+            if (DateTime.TryParseExact(IntervalTimeBox.Text, "HH:mm", null, System.Globalization.DateTimeStyles.None, out DateTime parsedTime))
+            {
+                int totalMilliseconds = (parsedTime.Hour * 3600 + parsedTime.Minute * 60) * 1000;
+
+                if (totalMilliseconds > 0)
+                {
+                    timerRemind.Interval = totalMilliseconds;
+                    timerRemind.Start();
+                    MessageBox.Show($"Нагадування увімкнено! Буду перевіряти справи кожні {IntervalTimeBox.Text}", "Таймер");
+                }
+                else
+                {
+                    MessageBox.Show("Час інтервалу має бути більшим за нуль.");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Введіть час у форматі ГГ:ХХ (наприклад, 00:10)");
+            }
+        }
+
+
+        private void stopButton_Click(object sender, EventArgs e)
+        {
+            timerRemind.Stop();
+            MessageBox.Show("Автоматичне нагадування вимкнено.");
+        }
+
+        private void timerRemind_Tick(object sender, EventArgs e)
+        {
+            // 1. Тимчасово зупиняємо таймер, щоб вікна не накопичувалися, поки ти читаєш перше
+            timerRemind.Stop();
+
+            DateTime now = DateTime.Now;
+            DataGridViewRow? nearestRow = null;
+            TimeSpan minDiff = TimeSpan.MaxValue;
+
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                if (row.IsNewRow) continue;
+
+                var dateCell = row.Cells["DateOfColumn"].Value;
+                var timeCell = row.Cells["TimeOfColumn"].Value;
+
+                if (dateCell != null && timeCell != null)
+                {
+                    string dateStr = dateCell.ToString() ?? "";
+                    string timeStr = timeCell.ToString() ?? "";
+
+                    if (DateTime.TryParse($"{dateStr} {timeStr}", out DateTime taskTime))
+                    {
+                        if (taskTime > now)
+                        {
+                            TimeSpan diff = taskTime - now;
+                            if (diff < minDiff)
+                            {
+                                minDiff = diff;
+                                nearestRow = row;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // 2. Якщо знайшли справу показуємо MessageBox
+            if (nearestRow != null)
+            {
+                string title = nearestRow.Cells["TitleColumn"].Value?.ToString() ?? "Без назви";
+                string time = nearestRow.Cells["TimeOfColumn"].Value?.ToString() ?? "--:--";
+
+                MessageBox.Show(
+                    $"🔔 НАГАДУВАННЯ\n\n" +
+                    $"Найближча справа: \"{title}\"\n" +
+                    $"Час: {time}\n" +
+                    $"Залишилося чекати: {minDiff.Hours} год. {minDiff.Minutes} хв.",
+                    "Мій Щоденник",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+            }
+
+            // 3. Після того, як кнатиснуто "ОК", запускаємо таймер знову для наступного кола
+            timerRemind.Start();
+        }
     }
 }

@@ -28,9 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             DiaryButton = new PictureBox();
             pictureBox1 = new PictureBox();
             PanelOfButton = new Panel();
+            panel4 = new Panel();
+            stopButton = new Button();
+            startButton = new Button();
+            IntervalTimeBox = new TextBox();
+            reminderLabel = new Label();
+            planLabel = new Label();
+            manageLabel = new Label();
+            labelSearch = new Label();
             panel3 = new Panel();
             searchButton = new Button();
             searchTimePicker = new DateTimePicker();
@@ -38,6 +47,7 @@
             overlayButton = new Button();
             rescheduleButton = new Button();
             panel1 = new Panel();
+            cloneButton = new Button();
             deleteButton = new Button();
             editButton = new Button();
             dataGridView1 = new DataGridView();
@@ -48,10 +58,11 @@
             TimeOfColumn = new DataGridViewTextBoxColumn();
             DurationColumn = new DataGridViewTextBoxColumn();
             DateOfEnding = new DataGridViewTextBoxColumn();
-            cloneButton = new Button();
+            timerRemind = new System.Windows.Forms.Timer(components);
             ((System.ComponentModel.ISupportInitialize)DiaryButton).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             PanelOfButton.SuspendLayout();
+            panel4.SuspendLayout();
             panel3.SuspendLayout();
             panel2.SuspendLayout();
             panel1.SuspendLayout();
@@ -83,6 +94,11 @@
             // PanelOfButton
             // 
             PanelOfButton.BackColor = Color.FromArgb(255, 251, 232);
+            PanelOfButton.Controls.Add(panel4);
+            PanelOfButton.Controls.Add(reminderLabel);
+            PanelOfButton.Controls.Add(planLabel);
+            PanelOfButton.Controls.Add(manageLabel);
+            PanelOfButton.Controls.Add(labelSearch);
             PanelOfButton.Controls.Add(panel3);
             PanelOfButton.Controls.Add(panel2);
             PanelOfButton.Controls.Add(panel1);
@@ -93,20 +109,104 @@
             PanelOfButton.TabIndex = 2;
             PanelOfButton.Paint += PanelOfButton_Paint;
             // 
+            // panel4
+            // 
+            panel4.BackColor = Color.FromArgb(252, 255, 242);
+            panel4.Controls.Add(stopButton);
+            panel4.Controls.Add(startButton);
+            panel4.Controls.Add(IntervalTimeBox);
+            panel4.Location = new Point(13, 741);
+            panel4.Name = "panel4";
+            panel4.Size = new Size(201, 127);
+            panel4.TabIndex = 3;
+            // 
+            // stopButton
+            // 
+            stopButton.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            stopButton.Location = new Point(40, 89);
+            stopButton.Name = "stopButton";
+            stopButton.Size = new Size(120, 29);
+            stopButton.TabIndex = 9;
+            stopButton.Text = "Стоп";
+            stopButton.UseVisualStyleBackColor = true;
+            stopButton.Click += stopButton_Click;
+            // 
+            // startButton
+            // 
+            startButton.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            startButton.Location = new Point(40, 54);
+            startButton.Name = "startButton";
+            startButton.Size = new Size(120, 29);
+            startButton.TabIndex = 3;
+            startButton.Text = "Старт";
+            startButton.UseVisualStyleBackColor = true;
+            startButton.Click += startButton_Click;
+            // 
+            // IntervalTimeBox
+            // 
+            IntervalTimeBox.Location = new Point(38, 12);
+            IntervalTimeBox.Name = "IntervalTimeBox";
+            IntervalTimeBox.Size = new Size(125, 27);
+            IntervalTimeBox.TabIndex = 8;
+            IntervalTimeBox.TextChanged += IntervalTimeBox_TextChanged;
+            // 
+            // reminderLabel
+            // 
+            reminderLabel.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            reminderLabel.ForeColor = Color.FromArgb(74, 0, 4);
+            reminderLabel.Location = new Point(43, 677);
+            reminderLabel.Name = "reminderLabel";
+            reminderLabel.Size = new Size(145, 61);
+            reminderLabel.TabIndex = 7;
+            reminderLabel.Text = "Автоматичне нагадування";
+            // 
+            // planLabel
+            // 
+            planLabel.AutoSize = true;
+            planLabel.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            planLabel.ForeColor = Color.FromArgb(74, 0, 4);
+            planLabel.Location = new Point(28, 450);
+            planLabel.Name = "planLabel";
+            planLabel.Size = new Size(192, 28);
+            planLabel.TabIndex = 6;
+            planLabel.Text = "Планування подій";
+            // 
+            // manageLabel
+            // 
+            manageLabel.AutoSize = true;
+            manageLabel.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            manageLabel.ForeColor = Color.FromArgb(74, 0, 4);
+            manageLabel.Location = new Point(53, 220);
+            manageLabel.Name = "manageLabel";
+            manageLabel.Size = new Size(123, 28);
+            manageLabel.TabIndex = 5;
+            manageLabel.Text = "Управління";
+            // 
+            // labelSearch
+            // 
+            labelSearch.AutoSize = true;
+            labelSearch.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            labelSearch.ForeColor = Color.FromArgb(74, 0, 4);
+            labelSearch.Location = new Point(28, 12);
+            labelSearch.Name = "labelSearch";
+            labelSearch.Size = new Size(173, 28);
+            labelSearch.TabIndex = 4;
+            labelSearch.Text = "Пошук за датою";
+            // 
             // panel3
             // 
             panel3.BackColor = Color.FromArgb(252, 255, 242);
             panel3.Controls.Add(searchButton);
             panel3.Controls.Add(searchTimePicker);
-            panel3.Location = new Point(15, 19);
+            panel3.Location = new Point(15, 54);
             panel3.Name = "panel3";
-            panel3.Size = new Size(201, 212);
+            panel3.Size = new Size(201, 144);
             panel3.TabIndex = 2;
             // 
             // searchButton
             // 
             searchButton.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 204);
-            searchButton.Location = new Point(38, 152);
+            searchButton.Location = new Point(41, 86);
             searchButton.Name = "searchButton";
             searchButton.Size = new Size(120, 29);
             searchButton.TabIndex = 2;
@@ -127,7 +227,7 @@
             panel2.BackColor = Color.FromArgb(252, 255, 242);
             panel2.Controls.Add(overlayButton);
             panel2.Controls.Add(rescheduleButton);
-            panel2.Location = new Point(15, 558);
+            panel2.Location = new Point(15, 503);
             panel2.Name = "panel2";
             panel2.Size = new Size(201, 155);
             panel2.TabIndex = 2;
@@ -160,10 +260,21 @@
             panel1.Controls.Add(cloneButton);
             panel1.Controls.Add(deleteButton);
             panel1.Controls.Add(editButton);
-            panel1.Location = new Point(15, 323);
+            panel1.Location = new Point(15, 260);
             panel1.Name = "panel1";
             panel1.Size = new Size(201, 173);
             panel1.TabIndex = 1;
+            // 
+            // cloneButton
+            // 
+            cloneButton.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            cloneButton.Location = new Point(38, 125);
+            cloneButton.Name = "cloneButton";
+            cloneButton.Size = new Size(120, 29);
+            cloneButton.TabIndex = 2;
+            cloneButton.Text = "Дублювати";
+            cloneButton.UseVisualStyleBackColor = true;
+            cloneButton.Click += cloneButton_Click;
             // 
             // deleteButton
             // 
@@ -266,16 +377,9 @@
             DateOfEnding.SortMode = DataGridViewColumnSortMode.NotSortable;
             DateOfEnding.Width = 125;
             // 
-            // cloneButton
+            // timerRemind
             // 
-            cloneButton.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 204);
-            cloneButton.Location = new Point(38, 125);
-            cloneButton.Name = "cloneButton";
-            cloneButton.Size = new Size(120, 29);
-            cloneButton.TabIndex = 2;
-            cloneButton.Text = "Дублювати";
-            cloneButton.UseVisualStyleBackColor = true;
-            cloneButton.Click += cloneButton_Click;
+            timerRemind.Tick += timerRemind_Tick;
             // 
             // DiaryMain
             // 
@@ -293,6 +397,9 @@
             ((System.ComponentModel.ISupportInitialize)DiaryButton).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             PanelOfButton.ResumeLayout(false);
+            PanelOfButton.PerformLayout();
+            panel4.ResumeLayout(false);
+            panel4.PerformLayout();
             panel3.ResumeLayout(false);
             panel2.ResumeLayout(false);
             panel1.ResumeLayout(false);
@@ -323,5 +430,14 @@
         private Button searchButton;
         private DateTimePicker searchTimePicker;
         private Button cloneButton;
+        private Label labelSearch;
+        private Label manageLabel;
+        private Label planLabel;
+        private Label reminderLabel;
+        private Panel panel4;
+        private Button stopButton;
+        private Button startButton;
+        private TextBox IntervalTimeBox;
+        private System.Windows.Forms.Timer timerRemind;
     }
 }
