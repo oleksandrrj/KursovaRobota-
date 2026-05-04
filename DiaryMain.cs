@@ -30,7 +30,7 @@ namespace Курсова_Робота__Щоденник_
             this.WindowState = FormWindowState.Maximized;
             PanelOfButton.Visible = false;
 
-            
+
             dataGridView1.ReadOnly = true;
             dataGridView1.EditMode = DataGridViewEditMode.EditProgrammatically;
         }
@@ -53,7 +53,7 @@ namespace Курсова_Робота__Щоденник_
             {
                 dataGridView1.ReadOnly = false;
                 dataGridView1.CurrentCell.ReadOnly = false;
-                dataGridView1.BeginEdit(true); 
+                dataGridView1.BeginEdit(true);
             }
         }
 
@@ -69,7 +69,7 @@ namespace Курсова_Робота__Щоденник_
             editButton.Focus();
         }
 
-        
+
         private void DiaryMain_Load(object sender, EventArgs e) { }
         private void PanelOfButton_Paint(object sender, PaintEventArgs e) { }
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
@@ -79,7 +79,7 @@ namespace Курсова_Робота__Щоденник_
             // Перевіряємо, чи клітинка зараз редагується
             if (dataGridView1.IsCurrentCellInEditMode)
             {
-                
+
                 DialogResult result = MessageBox.Show(
                     "Ви впевнені, що хочете зберегти ці зміни?",
                     "Підтвердження",
@@ -88,10 +88,10 @@ namespace Курсова_Робота__Щоденник_
 
                 if (result == DialogResult.No)
                 {
-                    
+
                     e.Cancel = true;
                 }
-                
+
             }
         }
 
@@ -155,7 +155,7 @@ namespace Курсова_Робота__Щоденник_
                 {
                     if (cell.Value != null && !string.IsNullOrWhiteSpace(cell.Value.ToString()))
                     {
-                        
+
                         if (DateTime.TryParse(cell.Value.ToString(), out DateTime currentDate))
                         {
                             // Додаємо 1 день і записуємо назад
@@ -165,13 +165,13 @@ namespace Курсова_Робота__Щоденник_
                     }
                 }
 
-                
+
                 if (!atLeastOneDateProcessed)
                 {
                     MessageBox.Show("Серед виділеного немає жодної коректної дати!", "Помилка");
                 }
 
-                
+
             }
             else
             {
@@ -191,13 +191,13 @@ namespace Курсова_Робота__Щоденник_
                 try
                 {
 
-                   
+
                     string title = row.Cells["TitleColumn"].Value?.ToString()?.Trim() ?? "Без назви";
                     string dateStr = row.Cells["DateOfColumn"].Value?.ToString()?.Trim() ?? "";
                     string timeStr = row.Cells["TimeOfColumn"].Value?.ToString()?.Trim() ?? "";
                     string durationStr = row.Cells["DurationColumn"].Value?.ToString()?.Trim() ?? "";
 
-                    // Якщо основні дані порожні — йдемо далі
+                    // Якщо основні дані порожні  йдемо далі
                     if (string.IsNullOrEmpty(dateStr) || string.IsNullOrEmpty(timeStr) || string.IsNullOrEmpty(durationStr))
                         continue;
 
@@ -210,7 +210,7 @@ namespace Курсова_Робота__Щоденник_
                 }
                 catch (Exception ex)
                 {
-                   
+
                     MessageBox.Show($"Помилка в рядку {i + 1}: {ex.Message}\nПеревір, чи вірно вказано (Name) стовпців у дизайнері!");
                     return;
                 }
@@ -251,5 +251,62 @@ namespace Курсова_Робота__Щоденник_
             }
         }
 
+        private void searchTimePicker_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void searchButton_Click(object sender, EventArgs e)
+        {
+            // 1. Отримуємо дату, яку ти вибрав у searchTimePicker (тільки число, місяць, рік)
+            DateTime targetDate = searchTimePicker.Value.Date;
+
+            bool isFound = false;
+
+            // 2. Знімаємо виділення з усіх рядків 
+            dataGridView1.ClearSelection();
+
+            // 3. Проходимо циклом по всіх рядках таблиці
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                // Пропускаємо порожній рядок в кінці таблиці
+                if (row.IsNewRow) continue;
+
+                // Беремо значення з нашого стовпця з датою
+                var dateCellValue = row.Cells["DateOfColumn"].Value;
+
+                if (dateCellValue != null)
+                {
+                    // Намагаємося перетворити текст із клітинки в дату
+                    if (DateTime.TryParse(dateCellValue.ToString(), out DateTime rowDate))
+                    {
+                        // 4. Порівнюємо дату в рядку з обраною датою
+                        if (rowDate.Date == targetDate)
+                        {
+                            
+                            row.Selected = true;
+
+                            // Якщо це перший знайдений рядок  прокручуємо таблицю до нього
+                            if (!isFound)
+                            {
+                                dataGridView1.FirstDisplayedScrollingRowIndex = row.Index;
+                            }
+
+                            isFound = true;
+                        }
+                    }
+                }
+            }
+
+            
+            if (!isFound)
+            {
+                MessageBox.Show("Справ на вибрану дату не знайдено.", "Пошук");
+            }
+            else
+            {
+                MessageBox.Show($"Знайдено та виділено справи на {targetDate.ToShortDateString()}", "Успіх");
+            }
+        }
     }
 }

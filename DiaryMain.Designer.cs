@@ -31,6 +31,9 @@
             DiaryButton = new PictureBox();
             pictureBox1 = new PictureBox();
             PanelOfButton = new Panel();
+            panel3 = new Panel();
+            searchButton = new Button();
+            searchTimePicker = new DateTimePicker();
             panel2 = new Panel();
             overlayButton = new Button();
             rescheduleButton = new Button();
@@ -48,6 +51,7 @@
             ((System.ComponentModel.ISupportInitialize)DiaryButton).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             PanelOfButton.SuspendLayout();
+            panel3.SuspendLayout();
             panel2.SuspendLayout();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
@@ -78,6 +82,7 @@
             // PanelOfButton
             // 
             PanelOfButton.BackColor = Color.FromArgb(255, 251, 232);
+            PanelOfButton.Controls.Add(panel3);
             PanelOfButton.Controls.Add(panel2);
             PanelOfButton.Controls.Add(panel1);
             PanelOfButton.Controls.Add(dataGridView1);
@@ -87,12 +92,41 @@
             PanelOfButton.TabIndex = 2;
             PanelOfButton.Paint += PanelOfButton_Paint;
             // 
+            // panel3
+            // 
+            panel3.BackColor = Color.FromArgb(252, 255, 242);
+            panel3.Controls.Add(searchButton);
+            panel3.Controls.Add(searchTimePicker);
+            panel3.Location = new Point(15, 19);
+            panel3.Name = "panel3";
+            panel3.Size = new Size(201, 212);
+            panel3.TabIndex = 2;
+            // 
+            // searchButton
+            // 
+            searchButton.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            searchButton.Location = new Point(38, 152);
+            searchButton.Name = "searchButton";
+            searchButton.Size = new Size(120, 29);
+            searchButton.TabIndex = 2;
+            searchButton.Text = "Шукати";
+            searchButton.UseVisualStyleBackColor = true;
+            searchButton.Click += searchButton_Click;
+            // 
+            // searchTimePicker
+            // 
+            searchTimePicker.Location = new Point(3, 18);
+            searchTimePicker.Name = "searchTimePicker";
+            searchTimePicker.Size = new Size(195, 27);
+            searchTimePicker.TabIndex = 0;
+            searchTimePicker.ValueChanged += searchTimePicker_ValueChanged;
+            // 
             // panel2
             // 
             panel2.BackColor = Color.FromArgb(252, 255, 242);
             panel2.Controls.Add(overlayButton);
             panel2.Controls.Add(rescheduleButton);
-            panel2.Location = new Point(15, 284);
+            panel2.Location = new Point(15, 558);
             panel2.Name = "panel2";
             panel2.Size = new Size(201, 155);
             panel2.TabIndex = 2;
@@ -124,7 +158,7 @@
             panel1.BackColor = Color.FromArgb(252, 255, 242);
             panel1.Controls.Add(deleteButton);
             panel1.Controls.Add(editButton);
-            panel1.Location = new Point(15, 75);
+            panel1.Location = new Point(15, 323);
             panel1.Name = "panel1";
             panel1.Size = new Size(201, 125);
             panel1.TabIndex = 1;
@@ -246,6 +280,7 @@
             ((System.ComponentModel.ISupportInitialize)DiaryButton).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             PanelOfButton.ResumeLayout(false);
+            panel3.ResumeLayout(false);
             panel2.ResumeLayout(false);
             panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
@@ -271,5 +306,8 @@
         private Button overlayButton;
         private Button rescheduleButton;
         private Button deleteButton;
+        private Panel panel3;
+        private Button searchButton;
+        private DateTimePicker searchTimePicker;
     }
 }
