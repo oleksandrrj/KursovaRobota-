@@ -87,7 +87,7 @@ namespace Курсова_Робота__Щоденник_
                     dataGridView1.Rows.Clear();
                     foreach (DataRow dr in dt.Rows)
                     {
-                        // Додаємо знак оклику після ItemArray
+
                         dataGridView1.Rows.Add(dr.ItemArray!);
                     }
                 }
@@ -143,7 +143,7 @@ namespace Курсова_Робота__Щоденник_
 
         private void dataGridView1_CellValidating_1(object sender, DataGridViewCellValidatingEventArgs e)
         {
-            // Перевіряємо, чи клітинка зараз редагується
+
             if (dataGridView1.IsCurrentCellInEditMode)
             {
 
@@ -179,7 +179,7 @@ namespace Курсова_Робота__Щоденник_
                     }
                 }
 
-                // Якщо всі вибрані клітинки порожні
+
                 if (!hasContent)
                 {
                     MessageBox.Show("Видалити пусті клітинки неможливо!", "Увага",
@@ -187,19 +187,19 @@ namespace Курсова_Робота__Щоденник_
                     return;
                 }
 
-                // Якщо є що видаляти запитуємо підтвердження
+
                 DialogResult result = MessageBox.Show($"Ви впевнені, що хочете видалити вміст {dataGridView1.SelectedCells.Count} виділених клітинок?",
                     "Підтвердження видалення", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (result == DialogResult.Yes)
                 {
-                    // Видаляємо текст у кожній виділеній клітинці
+
                     foreach (DataGridViewCell cell in dataGridView1.SelectedCells)
                     {
                         cell.Value = string.Empty;
                     }
 
-                    // Очищуємо виділення та повертаємо фокус
+
                     dataGridView1.ClearSelection();
                     editButton.Focus();
                 }
@@ -212,12 +212,12 @@ namespace Курсова_Робота__Щоденник_
 
         private void rescheduleButton_Click(object sender, EventArgs e)
         {
-            // Перевіряємо, чи є виділені клітинки
+
             if (dataGridView1.SelectedCells.Count > 0)
             {
                 bool atLeastOneDateProcessed = false;
 
-                // Проходимо по ВСІХ виділених клітинках
+
                 foreach (DataGridViewCell cell in dataGridView1.SelectedCells)
                 {
                     if (cell.Value != null && !string.IsNullOrWhiteSpace(cell.Value.ToString()))
@@ -249,7 +249,7 @@ namespace Курсова_Робота__Щоденник_
         private void overlayButton_Click(object sender, EventArgs e)
         {
             var intervals = new List<(int RowIndex, string Title, DateTime Start, DateTime End)>();
-            StringBuilder errorReport = new StringBuilder(); // Тут збиратимемо всі помилки
+            StringBuilder errorReport = new StringBuilder();
 
             for (int i = 0; i < dataGridView1.Rows.Count; i++)
             {
@@ -280,14 +280,14 @@ namespace Курсова_Робота__Щоденник_
                     rowHasError = true;
                 }
 
-                // Якщо в цьому рядку була помилка, не додаємо його в список інтервалів і йдемо до наступного
+
                 if (rowHasError) continue;
 
                 DateTime end = start.Add(duration);
                 intervals.Add((i + 1, title, start, end));
             }
 
-            // Якщо назбиралися помилки — показуємо їх і НЕ робимо аналіз накладок
+
             if (errorReport.Length > 0)
             {
                 MessageBox.Show("Знайдено помилки у форматі даних:\n\n" + errorReport.ToString(),
@@ -295,7 +295,6 @@ namespace Курсова_Робота__Щоденник_
                 return;
             }
 
-            // Далі йде логіка аналізу накладок (якщо помилок немає)
             StringBuilder report = new StringBuilder();
             bool hasOverlay = false;
 
@@ -337,35 +336,34 @@ namespace Курсова_Робота__Щоденник_
 
         private void searchButton_Click(object sender, EventArgs e) // Кнопка пошуку
         {
-            // 1. Отримуємо дату, яку ти вибрав у searchTimePicker (тільки число, місяць, рік)
+
             DateTime targetDate = searchTimePicker.Value.Date;
 
             bool isFound = false;
 
-            // 2. Знімаємо виділення з усіх рядків 
             dataGridView1.ClearSelection();
 
-            // 3. Проходимо циклом по всіх рядках таблиці
+
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
-                // Пропускаємо порожній рядок в кінці таблиці
+
                 if (row.IsNewRow) continue;
 
-                // Беремо значення з нашого стовпця з датою
+
                 var dateCellValue = row.Cells["DateOfColumn"].Value;
 
                 if (dateCellValue != null)
                 {
-                    // Намагаємося перетворити текст із клітинки в дату
+
                     if (DateTime.TryParse(dateCellValue.ToString(), out DateTime rowDate))
                     {
-                        // 4. Порівнюємо дату в рядку з обраною датою
+
                         if (rowDate.Date == targetDate)
                         {
 
                             row.Selected = true;
 
-                            // Якщо це перший знайдений рядок  прокручуємо таблицю до нього
+
                             if (!isFound)
                             {
                                 dataGridView1.FirstDisplayedScrollingRowIndex = row.Index;
@@ -392,14 +390,14 @@ namespace Курсова_Робота__Щоденник_
         {
             if (dataGridView1.SelectedCells.Count > 0)
             {
-                // 1. Групуємо всі виділені клітинки за їхніми рядками
+
                 var selectedRowsGroups = dataGridView1.SelectedCells
                     .Cast<DataGridViewCell>()
                     .GroupBy(c => c.RowIndex)
                     .OrderBy(g => g.Key)
                     .ToList();
 
-                // Список для нових клітинок (використовуємо nullable типи)
+
                 List<DataGridViewCell> cellsToSelect = new List<DataGridViewCell>();
 
                 foreach (var rowGroup in selectedRowsGroups)
@@ -408,14 +406,12 @@ namespace Курсова_Робота__Щоденник_
                     DataGridViewRow sourceRow = dataGridView1.Rows[sourceRowIndex];
                     if (sourceRow.IsNewRow) continue;
 
-                    // Дозволяємо null значення в нашому списку (object?)
                     var copiedData = new List<(string colName, object? value)>();
                     foreach (DataGridViewCell cell in rowGroup)
                     {
                         copiedData.Add((dataGridView1.Columns[cell.ColumnIndex].Name!, cell.Value));
                     }
 
-                    // 2. Шукаємо вільне місце нижче
                     int targetRowIndex = -1;
                     for (int i = sourceRowIndex + 1; i < dataGridView1.Rows.Count; i++)
                     {
@@ -440,13 +436,13 @@ namespace Курсова_Робота__Щоденник_
                         }
                     }
 
-                    // 3. Якщо місця немає то додаємо в кінець
+
                     if (targetRowIndex == -1)
                     {
                         targetRowIndex = dataGridView1.Rows.Add();
                     }
 
-                    // 4. Вставляємо дані
+
                     DataGridViewRow targetRow = dataGridView1.Rows[targetRowIndex];
                     foreach (var item in copiedData)
                     {
@@ -455,7 +451,7 @@ namespace Курсова_Робота__Щоденник_
                     }
                 }
 
-                // 5. Оновлюємо виділення
+
                 dataGridView1.ClearSelection();
                 foreach (var newCell in cellsToSelect)
                 {
@@ -509,7 +505,7 @@ namespace Курсова_Робота__Щоденник_
             DataGridViewRow nearestRow = null!;
             TimeSpan minDiff = TimeSpan.MaxValue;
 
-            // 1. Шукаємо НАЙБЛИЖЧУ справу серед усіх записів
+
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
                 if (row.IsNewRow) continue;
@@ -524,7 +520,6 @@ namespace Курсова_Робота__Щоденник_
                         DateTime eventTime = DateTime.Parse($"{dateVal} {timeVal}");
                         TimeSpan diff = eventTime - now;
 
-                        // Нас цікавлять тільки справи у майбутньому
                         if (diff.TotalSeconds > 0 && diff < minDiff)
                         {
                             minDiff = diff;
@@ -535,17 +530,17 @@ namespace Курсова_Робота__Щоденник_
                 }
             }
 
-            // 2. Якщо найближчу справу знайдено виводимо нагадування
+
             if (nearestRow != null)
             {
                 string title = nearestRow.Cells["TitleColumn"].Value?.ToString() ?? "Подія";
 
-                // Формуємо текст, каже скільки залишилося (дні, години, хвилини)
+
                 string timeLeft = "";
                 if (minDiff.Days > 0) timeLeft += $"{minDiff.Days} дн. ";
                 timeLeft += $"{minDiff.Hours} год. {minDiff.Minutes} хв.";
 
-                // Зупиняємо таймер на час показу вікна, щоб вони не накопичувались
+
                 timerRemind.Stop();
 
                 MessageBox.Show(
@@ -564,39 +559,39 @@ namespace Курсова_Робота__Щоденник_
             DateTime tomorrow = DateTime.Now.AddDays(1).Date;
             bool found = false;
 
-            // 1 Знімаємо всі попередні виділення
+
             dataGridView1.ClearSelection();
 
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
                 if (row.IsNewRow) continue;
 
-                // 2. Отримуємо дату з клітинки рядка
+
                 var dateValue = row.Cells["DateOfColumn"].Value?.ToString();
 
                 if (!string.IsNullOrEmpty(dateValue))
                 {
                     try
                     {
-                        // Перетворюємо текст із таблиці у формат дати
+
                         DateTime rowDate = DateTime.Parse(dateValue).Date;
 
-                        // 3. Порівнюємо дату рядка із завтрашньою датою
+
                         if (rowDate == tomorrow)
                         {
-                            row.Selected = true; // Виділяємо рядок, якщо дата завтрашня
+                            row.Selected = true;
                             found = true;
                         }
                     }
                     catch
                     {
-                        // Якщо формат дати в таблиці неправильний, просто пропускаємо
+
                         continue;
                     }
                 }
             }
 
-            // 4. Якщо нічого не знайшли то показуємо повідомлення
+
             if (!found)
             {
                 MessageBox.Show(
@@ -608,7 +603,7 @@ namespace Курсова_Робота__Щоденник_
             }
             else
             {
-                // Якщо знайшли, можна сфокусуватися на першому знайденому рядку
+
                 foreach (DataGridViewRow row in dataGridView1.Rows)
                 {
                     if (row.Selected)
@@ -623,11 +618,11 @@ namespace Курсова_Робота__Щоденник_
 
         private void searchYesterdayButton_Click(object sender, EventArgs e)
         {
-            // 1. Отримуємо вчорашню дату 
+
             DateTime yesterday = DateTime.Now.AddDays(-1).Date;
             bool found = false;
 
-            // Знімаємо старі виділення
+
             dataGridView1.ClearSelection();
 
             foreach (DataGridViewRow row in dataGridView1.Rows)
@@ -641,10 +636,10 @@ namespace Курсова_Робота__Щоденник_
                 {
                     try
                     {
-                        // Перетворюємо текст у дату та беремо тільки частину з датою (без часу)
+
                         DateTime rowDate = DateTime.Parse(dateValue).Date;
 
-                        // 2. Якщо дата в рядку збігається з вчорашньою
+
                         if (rowDate == yesterday)
                         {
                             row.Selected = true;
@@ -653,13 +648,12 @@ namespace Курсова_Робота__Щоденник_
                     }
                     catch
                     {
-                        // Пропускаємо рядки з неправильним форматом
+
                         continue;
                     }
                 }
             }
 
-            // 3. Виводимо результат
             if (!found)
             {
                 MessageBox.Show(
@@ -671,7 +665,7 @@ namespace Курсова_Робота__Щоденник_
             }
             else
             {
-                // Скролимо до першого знайденого запису
+
                 foreach (DataGridViewRow row in dataGridView1.Rows)
                 {
                     if (row.Selected)
@@ -712,7 +706,7 @@ namespace Курсова_Робота__Щоденник_
                     {
                         var cellValue = dataGridView1.Rows[i].Cells[columnIndex].Value;
 
-                        
+
                         if (cellValue == null || string.IsNullOrWhiteSpace(cellValue.ToString()))
                         {
                             targetRowIndex = i;
@@ -735,12 +729,12 @@ namespace Курсова_Робота__Щоденник_
                     }
                     else
                     {
-                        // Якщо над нами взагалі немає жодної порожньої клітинки до самого верху
+
                         hasBlockedCell = true;
                     }
                 }
 
-                // Повідомлення, якщо виділені об'єкти вперлися в обьект і вільного місця немає
+
                 if (!anyMoved && hasBlockedCell)
                 {
                     MessageBox.Show(
@@ -758,76 +752,194 @@ namespace Курсова_Робота__Щоденник_
         private void DownButton_Click(object sender, EventArgs e)
         {
             if (dataGridView1.SelectedCells.Count > 0)
-    {
-        // 1. Сортуємо знизу вгору, щоб нижні елементи не заважали (хоча при перестрибуванні це менш критично)
-        var selectedCells = dataGridView1.SelectedCells
-            .Cast<DataGridViewCell>()
-            .OrderByDescending(c => c.RowIndex)
-            .ToList();
-
-        bool anyMoved = false;
-        bool hasBlockedCell = false;
-
-        foreach (var currentCell in selectedCells)
-        {
-            int currentRowIndex = currentCell.RowIndex;
-            int columnIndex = currentCell.ColumnIndex;
-
-            if (currentCell.Value == null || string.IsNullOrWhiteSpace(currentCell.Value.ToString()))
-                continue;
-
-            int targetRowIndex = -1;
-
-            // 2. Шукаємо першу вільну клітинку, яка знаходиться нижче за виділену
-            // Програма буде перевіряти всі рядки до самого кінця таблиці
-            for (int i = currentRowIndex + 1; i < dataGridView1.Rows.Count; i++)
             {
-                if (dataGridView1.Rows[i].IsNewRow) break;
 
-                var cellValue = dataGridView1.Rows[i].Cells[columnIndex].Value;
+                var selectedCells = dataGridView1.SelectedCells
+                    .Cast<DataGridViewCell>()
+                    .OrderByDescending(c => c.RowIndex)
+                    .ToList();
 
-                // Якщо ми знайшли порожнє місце (навіть якщо вище було слово "варити")
-                if (cellValue == null || string.IsNullOrWhiteSpace(cellValue.ToString()))
+                bool anyMoved = false;
+                bool hasBlockedCell = false;
+
+                foreach (var currentCell in selectedCells)
                 {
-                    targetRowIndex = i;
-                    // Знайшли найближче вільне місце — робимо туди ОДИН крок
-                    break; 
+                    int currentRowIndex = currentCell.RowIndex;
+                    int columnIndex = currentCell.ColumnIndex;
+
+                    if (currentCell.Value == null || string.IsNullOrWhiteSpace(currentCell.Value.ToString()))
+                        continue;
+
+                    int targetRowIndex = -1;
+
+
+                    for (int i = currentRowIndex + 1; i < dataGridView1.Rows.Count; i++)
+                    {
+                        if (dataGridView1.Rows[i].IsNewRow) break;
+
+                        var cellValue = dataGridView1.Rows[i].Cells[columnIndex].Value;
+
+
+                        if (cellValue == null || string.IsNullOrWhiteSpace(cellValue.ToString()))
+                        {
+                            targetRowIndex = i;
+
+                            break;
+                        }
+
+                    }
+
+
+                    if (targetRowIndex != -1)
+                    {
+                        dataGridView1.Rows[targetRowIndex].Cells[columnIndex].Value = currentCell.Value;
+                        currentCell.Value = null;
+
+                        // Переносимо фокус
+                        currentCell.Selected = false;
+                        dataGridView1.Rows[targetRowIndex].Cells[columnIndex].Selected = true;
+
+                        anyMoved = true;
+                    }
+                    else
+                    {
+
+                        hasBlockedCell = true;
+                    }
                 }
-                // Якщо тут текст, ми просто йдемо далі вниз по циклу шукати порожній рядок
-            }
 
-            // 3. Якщо місце знайдено (навіть через кілька рядків)
-            if (targetRowIndex != -1)
-            {
-                dataGridView1.Rows[targetRowIndex].Cells[columnIndex].Value = currentCell.Value;
-                currentCell.Value = null;
+                // Повідомлення тільки якщо справді глухий кут до самого низу
+                if (!anyMoved && hasBlockedCell)
+                {
+                    MessageBox.Show(
+                        "Перенести неможливо, бо вільного місця нижче немає!",
+                        "Попередження",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
+                }
 
-                // Переносимо фокус
-                currentCell.Selected = false;
-                dataGridView1.Rows[targetRowIndex].Cells[columnIndex].Selected = true;
-                
-                anyMoved = true;
-            }
-            else
-            {
-                // Якщо від поточної позиції і до самого кінця таблиці все зайнято
-                hasBlockedCell = true;
+                dataGridView1.Focus();
             }
         }
 
-        // Повідомлення тільки якщо справді глухий кут до самого низу
-        if (!anyMoved && hasBlockedCell)
+        private void panel1_Paint(object sender, PaintEventArgs e)
         {
-            MessageBox.Show(
-                "Перенести неможливо, бо вільного місця нижче немає!", 
-                "Попередження", 
-                MessageBoxButtons.OK, 
-                MessageBoxIcon.Warning
-            );
+
         }
 
-        dataGridView1.Focus();
-    }
+        private void SearchByNameBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void SearchByNameButton_Click(object sender, EventArgs e)
+        {
+
+            string? searchText = SearchByNameBox?.Text?.Trim()?.ToLower();
+
+            if (string.IsNullOrEmpty(searchText))
+            {
+                MessageBox.Show("Будь ласка, введіть назву для пошуку.");
+                return;
+            }
+
+            bool found = false;
+            dataGridView1.ClearSelection();
+
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+
+                var cell = row.Cells["TitleColumn"];
+                if (cell != null && cell.Value != null)
+                {
+                    string cellValue = cell.Value.ToString()?.ToLower() ?? "";
+
+                    if (cellValue.Contains(searchText))
+                    {
+                        row.Selected = true;
+                        if (!found)
+                        {
+                            dataGridView1.FirstDisplayedScrollingRowIndex = row.Index;
+                        }
+                        found = true;
+                    }
+                }
+            }
+
+            if (!found)
+            {
+                MessageBox.Show("Справ з такою назвою не знайдено.");
+            }
+        }
+
+        private void ExportButton_Click(object sender, EventArgs e)
+        {
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.Filter = "Текстові файли (*.txt)|*.txt|Всі файли (*.*)|*.*";
+                saveFileDialog.Title = "Зберегти щоденник у файл";
+                saveFileDialog.FileName = "Мій_Розклад.txt";
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        // FileName ніколи не буде null, якщо ShowDialog повернув OK
+                        using (StreamWriter writer = new StreamWriter(saveFileDialog.FileName))
+                        {
+                            writer.WriteLine("==================================================");
+                            writer.WriteLine("            ПОВНИЙ СПИСОК ВАШИХ СПРАВ             ");
+                            writer.WriteLine("==================================================");
+                            writer.WriteLine($"Дата експорту: {DateTime.Now:dd.MM.yyyy HH:mm}");
+                            writer.WriteLine();
+
+                            foreach (DataGridViewRow row in dataGridView1.Rows)
+                            {
+                                if (row.IsNewRow) continue;
+
+                                
+                                string title = row.Cells["TitleColumn"].Value?.ToString() ?? "---";
+                                string desc = row.Cells["DescColumn"].Value?.ToString() ?? "---";
+                                string place = row.Cells["PlaceColumn"].Value?.ToString() ?? "Не вказано";
+
+                                
+                                string? dateStart = row.Cells["DateOfColumn"].Value?.ToString();
+                                string? timeStart = row.Cells["TimeOfColumn"].Value?.ToString();
+
+                                string duration = row.Cells["DurationColumn"].Value?.ToString() ?? "---";
+                                string dateEnd = row.Cells["DateOfEnding"].Value?.ToString() ?? "---";
+
+                                string startInfo;
+                                if (string.IsNullOrWhiteSpace(dateStart) && string.IsNullOrWhiteSpace(timeStart))
+                                {
+                                    startInfo = "Не вказано";
+                                }
+                                else
+                                {
+                                    
+                                    string timePart = !string.IsNullOrWhiteSpace(timeStart) ? " о " + timeStart : "";
+                                    startInfo = ((dateStart ?? "") + timePart).Trim();
+                                }
+
+                                writer.WriteLine($"📌 СПРАВА: {title.ToUpper()}");
+                                writer.WriteLine($"📝 Опис:      {desc}");
+                                writer.WriteLine($"📍 Місце:     {place}");
+                                writer.WriteLine($"🕒 Початок:   {startInfo}");
+                                writer.WriteLine($"⏳ Тривалість: {duration}");
+                                writer.WriteLine($"🏁 Завершення: {dateEnd}");
+                                writer.WriteLine(new string('-', 40));
+                            }
+                        }
+
+                        MessageBox.Show("Всі справи успішно збережено у файл!", "Успіх", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Не вдалося зберегти файл: {ex.Message}", "Помилка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
         }
     }
 }

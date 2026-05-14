@@ -32,6 +32,7 @@
             DiaryButton = new PictureBox();
             pictureBox1 = new PictureBox();
             PanelOfButton = new Panel();
+            ExportButton = new Button();
             panel4 = new Panel();
             stopButton = new Button();
             startButton = new Button();
@@ -41,6 +42,8 @@
             manageLabel = new Label();
             labelSearch = new Label();
             panel3 = new Panel();
+            SearchByNameButton = new Button();
+            SearchByNameBox = new TextBox();
             searchYesterdayButton = new Button();
             searchTomorrowButton = new Button();
             searchButton = new Button();
@@ -98,6 +101,7 @@
             // PanelOfButton
             // 
             PanelOfButton.BackColor = Color.FromArgb(255, 251, 232);
+            PanelOfButton.Controls.Add(ExportButton);
             PanelOfButton.Controls.Add(panel4);
             PanelOfButton.Controls.Add(reminderLabel);
             PanelOfButton.Controls.Add(planLabel);
@@ -107,11 +111,22 @@
             PanelOfButton.Controls.Add(panel2);
             PanelOfButton.Controls.Add(panel1);
             PanelOfButton.Controls.Add(dataGridView1);
-            PanelOfButton.Location = new Point(174, 44);
+            PanelOfButton.Location = new Point(174, 12);
             PanelOfButton.Name = "PanelOfButton";
-            PanelOfButton.Size = new Size(1702, 1016);
+            PanelOfButton.Size = new Size(1721, 1087);
             PanelOfButton.TabIndex = 2;
             PanelOfButton.Paint += PanelOfButton_Paint;
+            // 
+            // ExportButton
+            // 
+            ExportButton.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            ExportButton.Location = new Point(20, 1029);
+            ExportButton.Name = "ExportButton";
+            ExportButton.Size = new Size(190, 29);
+            ExportButton.TabIndex = 8;
+            ExportButton.Text = "Скачати файл";
+            ExportButton.UseVisualStyleBackColor = true;
+            ExportButton.Click += ExportButton_Click;
             // 
             // panel4
             // 
@@ -119,7 +134,7 @@
             panel4.Controls.Add(stopButton);
             panel4.Controls.Add(startButton);
             panel4.Controls.Add(IntervalTimeBox);
-            panel4.Location = new Point(15, 824);
+            panel4.Location = new Point(17, 877);
             panel4.Name = "panel4";
             panel4.Size = new Size(201, 127);
             panel4.TabIndex = 3;
@@ -158,7 +173,7 @@
             // 
             reminderLabel.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
             reminderLabel.ForeColor = Color.FromArgb(74, 0, 4);
-            reminderLabel.Location = new Point(42, 760);
+            reminderLabel.Location = new Point(44, 813);
             reminderLabel.Name = "reminderLabel";
             reminderLabel.Size = new Size(145, 61);
             reminderLabel.TabIndex = 7;
@@ -169,7 +184,7 @@
             planLabel.AutoSize = true;
             planLabel.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
             planLabel.ForeColor = Color.FromArgb(74, 0, 4);
-            planLabel.Location = new Point(18, 549);
+            planLabel.Location = new Point(17, 602);
             planLabel.Name = "planLabel";
             planLabel.Size = new Size(192, 28);
             planLabel.TabIndex = 6;
@@ -180,7 +195,7 @@
             manageLabel.AutoSize = true;
             manageLabel.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
             manageLabel.ForeColor = Color.FromArgb(74, 0, 4);
-            manageLabel.Location = new Point(53, 277);
+            manageLabel.Location = new Point(55, 340);
             manageLabel.Name = "manageLabel";
             manageLabel.Size = new Size(123, 28);
             manageLabel.TabIndex = 5;
@@ -191,30 +206,51 @@
             labelSearch.AutoSize = true;
             labelSearch.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
             labelSearch.ForeColor = Color.FromArgb(74, 0, 4);
-            labelSearch.Location = new Point(28, 12);
+            labelSearch.Location = new Point(77, 14);
             labelSearch.Name = "labelSearch";
-            labelSearch.Size = new Size(173, 28);
+            labelSearch.Size = new Size(84, 28);
             labelSearch.TabIndex = 4;
-            labelSearch.Text = "Пошук за датою";
+            labelSearch.Text = "Пошук ";
             // 
             // panel3
             // 
             panel3.BackColor = Color.FromArgb(252, 255, 242);
+            panel3.Controls.Add(SearchByNameButton);
+            panel3.Controls.Add(SearchByNameBox);
             panel3.Controls.Add(searchYesterdayButton);
             panel3.Controls.Add(searchTomorrowButton);
             panel3.Controls.Add(searchButton);
             panel3.Controls.Add(searchTimePicker);
-            panel3.Location = new Point(15, 54);
+            panel3.Location = new Point(17, 56);
             panel3.Name = "panel3";
-            panel3.Size = new Size(201, 201);
+            panel3.Size = new Size(201, 281);
             panel3.TabIndex = 2;
+            // 
+            // SearchByNameButton
+            // 
+            SearchByNameButton.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            SearchByNameButton.Location = new Point(9, 146);
+            SearchByNameButton.Name = "SearchByNameButton";
+            SearchByNameButton.Size = new Size(183, 29);
+            SearchByNameButton.TabIndex = 7;
+            SearchByNameButton.Text = "Шукати за назвою";
+            SearchByNameButton.UseVisualStyleBackColor = true;
+            SearchByNameButton.Click += SearchByNameButton_Click;
+            // 
+            // SearchByNameBox
+            // 
+            SearchByNameBox.Location = new Point(8, 113);
+            SearchByNameBox.Name = "SearchByNameBox";
+            SearchByNameBox.Size = new Size(184, 27);
+            SearchByNameBox.TabIndex = 5;
+            SearchByNameBox.TextChanged += SearchByNameBox_TextChanged;
             // 
             // searchYesterdayButton
             // 
             searchYesterdayButton.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 204);
-            searchYesterdayButton.Location = new Point(16, 155);
+            searchYesterdayButton.Location = new Point(8, 240);
             searchYesterdayButton.Name = "searchYesterdayButton";
-            searchYesterdayButton.Size = new Size(169, 29);
+            searchYesterdayButton.Size = new Size(184, 29);
             searchYesterdayButton.TabIndex = 4;
             searchYesterdayButton.Text = "Вчорашні справи";
             searchYesterdayButton.UseVisualStyleBackColor = true;
@@ -223,9 +259,9 @@
             // searchTomorrowButton
             // 
             searchTomorrowButton.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 204);
-            searchTomorrowButton.Location = new Point(16, 106);
+            searchTomorrowButton.Location = new Point(9, 205);
             searchTomorrowButton.Name = "searchTomorrowButton";
-            searchTomorrowButton.Size = new Size(169, 29);
+            searchTomorrowButton.Size = new Size(184, 29);
             searchTomorrowButton.TabIndex = 3;
             searchTomorrowButton.Text = "Справи на завтра";
             searchTomorrowButton.UseVisualStyleBackColor = true;
@@ -234,11 +270,11 @@
             // searchButton
             // 
             searchButton.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 204);
-            searchButton.Location = new Point(38, 62);
+            searchButton.Location = new Point(25, 55);
             searchButton.Name = "searchButton";
-            searchButton.Size = new Size(120, 29);
+            searchButton.Size = new Size(147, 29);
             searchButton.TabIndex = 2;
-            searchButton.Text = "Шукати";
+            searchButton.Text = "Шукати по даті";
             searchButton.UseVisualStyleBackColor = true;
             searchButton.Click += searchButton_Click;
             // 
@@ -255,7 +291,7 @@
             panel2.BackColor = Color.FromArgb(252, 255, 242);
             panel2.Controls.Add(overlayButton);
             panel2.Controls.Add(rescheduleButton);
-            panel2.Location = new Point(15, 589);
+            panel2.Location = new Point(14, 642);
             panel2.Name = "panel2";
             panel2.Size = new Size(201, 155);
             panel2.TabIndex = 2;
@@ -290,10 +326,11 @@
             panel1.Controls.Add(cloneButton);
             panel1.Controls.Add(deleteButton);
             panel1.Controls.Add(editButton);
-            panel1.Location = new Point(15, 317);
+            panel1.Location = new Point(17, 380);
             panel1.Name = "panel1";
             panel1.Size = new Size(201, 214);
             panel1.TabIndex = 1;
+            panel1.Paint += panel1_Paint;
             // 
             // DownButton
             // 
@@ -357,11 +394,11 @@
             dataGridView1.BackgroundColor = SystemColors.ButtonFace;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Columns.AddRange(new DataGridViewColumn[] { TitleColumn, DescColumn, PlaceColumn, DateOfColumn, TimeOfColumn, DurationColumn, DateOfEnding });
-            dataGridView1.Location = new Point(233, 0);
+            dataGridView1.Location = new Point(249, 0);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
             dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(1469, 1016);
+            dataGridView1.Size = new Size(1472, 1081);
             dataGridView1.TabIndex = 0;
             dataGridView1.CellContentClick += dataGridView1_CellContentClick;
             dataGridView1.CellValidating += dataGridView1_CellValidating_1;
@@ -453,6 +490,7 @@
             panel4.ResumeLayout(false);
             panel4.PerformLayout();
             panel3.ResumeLayout(false);
+            panel3.PerformLayout();
             panel2.ResumeLayout(false);
             panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
@@ -495,5 +533,8 @@
         private Button searchYesterdayButton;
         private Button UpButton;
         private Button DownButton;
+        private TextBox SearchByNameBox;
+        private Button SearchByNameButton;
+        private Button ExportButton;
     }
 }
