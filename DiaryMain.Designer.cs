@@ -124,7 +124,7 @@
             ExportButton.Name = "ExportButton";
             ExportButton.Size = new Size(190, 29);
             ExportButton.TabIndex = 8;
-            ExportButton.Text = "Скачати файл";
+            ExportButton.Text = "Завантажити файл";
             ExportButton.UseVisualStyleBackColor = true;
             ExportButton.Click += ExportButton_Click;
             // 
@@ -394,7 +394,7 @@
             dataGridView1.BackgroundColor = SystemColors.ButtonFace;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Columns.AddRange(new DataGridViewColumn[] { TitleColumn, DescColumn, PlaceColumn, DateOfColumn, TimeOfColumn, DurationColumn, DateOfEnding });
-            dataGridView1.Location = new Point(249, 0);
+            dataGridView1.Location = new Point(266, 3);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
             dataGridView1.RowHeadersWidth = 51;

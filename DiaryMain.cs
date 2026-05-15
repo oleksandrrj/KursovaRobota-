@@ -164,7 +164,7 @@ namespace Курсова_Робота__Щоденник_
 
         private void deleteButton_Click(object sender, EventArgs e)
         {
-            // Перевіряємо, чи вибрано хоча б одну клітинку
+            
             if (dataGridView1.SelectedCells.Count > 0)
             {
                 bool hasContent = false;
@@ -266,14 +266,14 @@ namespace Курсова_Робота__Щоденник_
 
                 bool rowHasError = false;
 
-                // 1. Перевірка дати та часу
+                //  Перевірка дати та часу
                 if (!DateTime.TryParse($"{dateStr} {timeStr}", out DateTime start))
                 {
                     errorReport.AppendLine($"❌ Рядок {i + 1}: Невірний формат дати/часу (\"{dateStr} {timeStr}\")");
                     rowHasError = true;
                 }
 
-                // 2. Перевірка тривалості
+                //  Перевірка тривалості
                 if (!TimeSpan.TryParse(durationStr, out TimeSpan duration))
                 {
                     errorReport.AppendLine($"❌ Рядок {i + 1}: Невірний формат тривалості (\"{durationStr}\")");
@@ -334,7 +334,7 @@ namespace Курсова_Робота__Щоденник_
 
         }
 
-        private void searchButton_Click(object sender, EventArgs e) // Кнопка пошуку
+        private void searchButton_Click(object sender, EventArgs e) 
         {
 
             DateTime targetDate = searchTimePicker.Value.Date;
@@ -470,7 +470,7 @@ namespace Курсова_Робота__Щоденник_
 
         private void startButton_Click(object sender, EventArgs e)
         {
-            // Перевіряємо формат 00:00 у полі IntervalTimeBox
+            
             if (DateTime.TryParseExact(IntervalTimeBox.Text, "HH:mm", null, System.Globalization.DateTimeStyles.None, out DateTime parsedTime))
             {
                 int totalMilliseconds = (parsedTime.Hour * 3600 + parsedTime.Minute * 60) * 1000;
@@ -681,7 +681,7 @@ namespace Курсова_Робота__Щоденник_
         {
             if (dataGridView1.SelectedCells.Count > 0)
             {
-                // 1. Сортуємо від верхніх до нижніх, щоб не було "заторів"
+                
                 var selectedCells = dataGridView1.SelectedCells
                     .Cast<DataGridViewCell>()
                     .OrderBy(c => c.RowIndex)
@@ -700,8 +700,7 @@ namespace Курсова_Робота__Щоденник_
 
                     int targetRowIndex = -1;
 
-                    // 2. Шукаємо ПЕРШУ вільну клітинку вище поточної
-                    // Йдемо від поточного рядка вгору до самого початку (0)
+                    
                     for (int i = currentRowIndex - 1; i >= 0; i--)
                     {
                         var cellValue = dataGridView1.Rows[i].Cells[columnIndex].Value;
@@ -710,12 +709,11 @@ namespace Курсова_Робота__Щоденник_
                         if (cellValue == null || string.IsNullOrWhiteSpace(cellValue.ToString()))
                         {
                             targetRowIndex = i;
-                            break; // Знайшли найближчу вільну лунку то зупиняємо пошук
+                            break; 
                         }
-                        // Якщо тут текст, ми його просто ігноруємо і дивимось далі вгору
+                        
                     }
 
-                    // 3. Якщо вільне місце знайдено хоч десь вище
                     if (targetRowIndex != -1)
                     {
                         dataGridView1.Rows[targetRowIndex].Cells[columnIndex].Value = currentCell.Value;
@@ -795,7 +793,7 @@ namespace Курсова_Робота__Щоденник_
                         dataGridView1.Rows[targetRowIndex].Cells[columnIndex].Value = currentCell.Value;
                         currentCell.Value = null;
 
-                        // Переносимо фокус
+                        
                         currentCell.Selected = false;
                         dataGridView1.Rows[targetRowIndex].Cells[columnIndex].Selected = true;
 
@@ -808,7 +806,7 @@ namespace Курсова_Робота__Щоденник_
                     }
                 }
 
-                // Повідомлення тільки якщо справді глухий кут до самого низу
+                
                 if (!anyMoved && hasBlockedCell)
                 {
                     MessageBox.Show(
@@ -885,7 +883,7 @@ namespace Курсова_Робота__Щоденник_
                 {
                     try
                     {
-                        // FileName ніколи не буде null, якщо ShowDialog повернув OK
+                        
                         using (StreamWriter writer = new StreamWriter(saveFileDialog.FileName))
                         {
                             writer.WriteLine("==================================================");
