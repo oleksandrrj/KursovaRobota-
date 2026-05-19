@@ -30,7 +30,13 @@
         {
             PictureBoxButton = new PictureBox();
             PanelOfDiary = new Panel();
+            panel2 = new Panel();
+            SearchOfDateButton = new Button();
+            DiaryTimePicker = new DateTimePicker();
+            label1 = new Label();
             panel1 = new Panel();
+            DeleteRowButton = new Button();
+            AddRowButton = new Button();
             EditButton = new Button();
             DiaryTable = new DataGridView();
             TitleColumn = new DataGridViewTextBoxColumn();
@@ -42,6 +48,7 @@
             DateOfEndColumn = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)PictureBoxButton).BeginInit();
             PanelOfDiary.SuspendLayout();
+            panel2.SuspendLayout();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)DiaryTable).BeginInit();
             SuspendLayout();
@@ -60,6 +67,8 @@
             // PanelOfDiary
             // 
             PanelOfDiary.BackColor = Color.FromArgb(255, 248, 230);
+            PanelOfDiary.Controls.Add(panel2);
+            PanelOfDiary.Controls.Add(label1);
             PanelOfDiary.Controls.Add(panel1);
             PanelOfDiary.Controls.Add(DiaryTable);
             PanelOfDiary.Location = new Point(168, 25);
@@ -67,14 +76,77 @@
             PanelOfDiary.Size = new Size(1726, 1044);
             PanelOfDiary.TabIndex = 2;
             // 
+            // panel2
+            // 
+            panel2.BackColor = Color.FromArgb(255, 253, 214);
+            panel2.Controls.Add(SearchOfDateButton);
+            panel2.Controls.Add(DiaryTimePicker);
+            panel2.Location = new Point(15, 51);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(206, 180);
+            panel2.TabIndex = 2;
+            // 
+            // SearchOfDateButton
+            // 
+            SearchOfDateButton.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            SearchOfDateButton.Location = new Point(32, 56);
+            SearchOfDateButton.Name = "SearchOfDateButton";
+            SearchOfDateButton.Size = new Size(146, 29);
+            SearchOfDateButton.TabIndex = 1;
+            SearchOfDateButton.Text = "Пошук за датою";
+            SearchOfDateButton.UseVisualStyleBackColor = true;
+            SearchOfDateButton.Click += SearchOfDateButton_Click;
+            // 
+            // DiaryTimePicker
+            // 
+            DiaryTimePicker.Location = new Point(3, 12);
+            DiaryTimePicker.Name = "DiaryTimePicker";
+            DiaryTimePicker.Size = new Size(200, 27);
+            DiaryTimePicker.TabIndex = 0;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            label1.ForeColor = Color.FromArgb(115, 0, 8);
+            label1.Location = new Point(82, 15);
+            label1.Name = "label1";
+            label1.Size = new Size(67, 23);
+            label1.TabIndex = 2;
+            label1.Text = "Пошук";
+            // 
             // panel1
             // 
             panel1.BackColor = Color.FromArgb(255, 253, 214);
+            panel1.Controls.Add(DeleteRowButton);
+            panel1.Controls.Add(AddRowButton);
             panel1.Controls.Add(EditButton);
-            panel1.Location = new Point(18, 59);
+            panel1.Location = new Point(15, 272);
             panel1.Name = "panel1";
-            panel1.Size = new Size(206, 125);
+            panel1.Size = new Size(206, 167);
             panel1.TabIndex = 1;
+            // 
+            // DeleteRowButton
+            // 
+            DeleteRowButton.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            DeleteRowButton.Location = new Point(32, 114);
+            DeleteRowButton.Name = "DeleteRowButton";
+            DeleteRowButton.Size = new Size(142, 29);
+            DeleteRowButton.TabIndex = 2;
+            DeleteRowButton.Text = "Видалити рядок";
+            DeleteRowButton.UseVisualStyleBackColor = true;
+            DeleteRowButton.Click += DeleteRowButton_Click;
+            // 
+            // AddRowButton
+            // 
+            AddRowButton.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            AddRowButton.Location = new Point(32, 69);
+            AddRowButton.Name = "AddRowButton";
+            AddRowButton.Size = new Size(142, 29);
+            AddRowButton.TabIndex = 1;
+            AddRowButton.Text = "Додати рядок";
+            AddRowButton.UseVisualStyleBackColor = true;
+            AddRowButton.Click += AddRowButton_Click;
             // 
             // EditButton
             // 
@@ -97,18 +169,17 @@
             DiaryTable.Columns.AddRange(new DataGridViewColumn[] { TitleColumn, DescColumn, PlaceColumn, DateColumn, TimeColumn, DurationColumn, DateOfEndColumn });
             DiaryTable.Location = new Point(238, 0);
             DiaryTable.Name = "DiaryTable";
-            DiaryTable.ReadOnly = true;
             DiaryTable.RowHeadersWidth = 51;
             DiaryTable.Size = new Size(1488, 1044);
             DiaryTable.TabIndex = 0;
-            DiaryTable.CellValidating += DiaryTable_CellValidating;
+            DiaryTable.CellBeginEdit += DiaryTable_CellBeginEdit;
+            
             // 
             // TitleColumn
             // 
             TitleColumn.HeaderText = "Назва справи";
             TitleColumn.MinimumWidth = 6;
             TitleColumn.Name = "TitleColumn";
-            TitleColumn.ReadOnly = true;
             TitleColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
             TitleColumn.Width = 150;
             // 
@@ -117,7 +188,6 @@
             DescColumn.HeaderText = "Опис справи";
             DescColumn.MinimumWidth = 6;
             DescColumn.Name = "DescColumn";
-            DescColumn.ReadOnly = true;
             DescColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
             DescColumn.Width = 600;
             // 
@@ -126,7 +196,6 @@
             PlaceColumn.HeaderText = "Місце проведення";
             PlaceColumn.MinimumWidth = 6;
             PlaceColumn.Name = "PlaceColumn";
-            PlaceColumn.ReadOnly = true;
             PlaceColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
             PlaceColumn.Width = 250;
             // 
@@ -135,7 +204,6 @@
             DateColumn.HeaderText = "Дата ";
             DateColumn.MinimumWidth = 6;
             DateColumn.Name = "DateColumn";
-            DateColumn.ReadOnly = true;
             DateColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
             DateColumn.Width = 125;
             // 
@@ -144,7 +212,6 @@
             TimeColumn.HeaderText = "Час ";
             TimeColumn.MinimumWidth = 6;
             TimeColumn.Name = "TimeColumn";
-            TimeColumn.ReadOnly = true;
             TimeColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
             TimeColumn.Width = 80;
             // 
@@ -153,7 +220,6 @@
             DurationColumn.HeaderText = "Тривалість";
             DurationColumn.MinimumWidth = 6;
             DurationColumn.Name = "DurationColumn";
-            DurationColumn.ReadOnly = true;
             DurationColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
             DurationColumn.Width = 125;
             // 
@@ -162,7 +228,6 @@
             DateOfEndColumn.HeaderText = "Дата закінчення";
             DateOfEndColumn.MinimumWidth = 6;
             DateOfEndColumn.Name = "DateOfEndColumn";
-            DateOfEndColumn.ReadOnly = true;
             DateOfEndColumn.Width = 125;
             // 
             // DiaryMain
@@ -178,6 +243,8 @@
             FormClosed += DiaryMain_FormClosed;
             ((System.ComponentModel.ISupportInitialize)PictureBoxButton).EndInit();
             PanelOfDiary.ResumeLayout(false);
+            PanelOfDiary.PerformLayout();
+            panel2.ResumeLayout(false);
             panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)DiaryTable).EndInit();
             ResumeLayout(false);
@@ -197,5 +264,11 @@
         private DataGridViewTextBoxColumn DateOfEndColumn;
         private Panel panel1;
         private Button EditButton;
+        private Panel panel2;
+        private Label label1;
+        private Button SearchOfDateButton;
+        private DateTimePicker DiaryTimePicker;
+        private Button AddRowButton;
+        private Button DeleteRowButton;
     }
 }
