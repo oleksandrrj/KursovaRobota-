@@ -322,10 +322,9 @@ namespace Курсова_Робота__Щоденник_
 
         private void DiaryDeleteRowButton_Click(object sender, EventArgs e)
         {
-            
+
             if (DiaryTable.SelectedRows.Count == 0)
             {
-                
                 if (DiaryTable.SelectedCells.Count > 0)
                 {
                     MessageBox.Show("Виділіть весь рядок, щоб можна було його видалити!",
@@ -348,11 +347,21 @@ namespace Курсова_Робота__Щоденник_
                 
                 foreach (int idx in selectedIndices)
                 {
-                    _diaryManager.RemoveEntryAt(idx); 
-                    DiaryTable.Rows.RemoveAt(idx);    
+                    
+                    DataGridViewRow row = DiaryTable.Rows[idx];
+
+                    
+                    if (!row.IsNewRow)
+                    {
+                       
+                        _diaryManager.RemoveEntryAt(idx);
+
+                        
+                        DiaryTable.Rows.RemoveAt(idx);
+                    }
                 }
 
-                
+               
                 SaveDataToXml();
             }
         }
@@ -619,3 +628,4 @@ namespace Курсова_Робота__Щоденник_
         }
     }
 }
+

@@ -13,7 +13,7 @@ namespace Курсова_Робота__Щоденник_
 
         public BindingList<DiaryEntry> Entries => _entries;
 
-        public DiaryManager()
+        public DiaryManager() 
         {
 
         }
