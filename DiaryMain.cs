@@ -398,10 +398,8 @@ namespace Курсова_Робота__Щоденник_
 
         private void DiaryCopyButton_Click(object sender, EventArgs e)
         {
-            
             if (DiaryTable.SelectedCells.Count == 0) return;
 
-            
             var selectedCells = DiaryTable.SelectedCells
                 .Cast<DataGridViewCell>()
                 .OrderBy(c => c.RowIndex)
@@ -411,61 +409,42 @@ namespace Курсова_Робота__Щоденник_
 
             foreach (var cell in selectedCells)
             {
-                
                 if (cell.Value == null || string.IsNullOrWhiteSpace(cell.Value.ToString())) continue;
 
                 string colName = DiaryTable.Columns[cell.ColumnIndex].Name;
                 object valueToCopy = cell.Value;
-                int sourceRowIndex = cell.RowIndex;
 
-                bool placed = false;
-
-                
-                for (int i = sourceRowIndex + 1; i < DiaryTable.Rows.Count; i++)
+                DataGridViewCell? targetCell = null;
+                for (int i = 0; i < DiaryTable.Rows.Count; i++)
                 {
-                    
                     if (DiaryTable.Rows[i].IsNewRow) continue;
 
-                    var targetCell = DiaryTable.Rows[i].Cells[colName];
-
-                    
-                    if (string.IsNullOrWhiteSpace(targetCell.Value?.ToString()))
+                    var checkCell = DiaryTable.Rows[i].Cells[colName];
+                    if (string.IsNullOrWhiteSpace(checkCell.Value?.ToString()))
                     {
-                        targetCell.Value = valueToCopy;
-                        _diaryManager.UpdateEntryField(i, colName, valueToCopy?.ToString() ?? "");
-
-                        newlyCreatedCells.Add(targetCell);
-                        placed = true;
-                        break; 
+                        targetCell = checkCell;
+                        break;
                     }
                 }
 
-                
-                if (!placed)
+                if (targetCell == null)
                 {
                     int newRowIdx = DiaryTable.Rows.Add();
-                    var targetCell = DiaryTable.Rows[newRowIdx].Cells[colName];
-
-                    targetCell.Value = valueToCopy;
-                    _diaryManager.UpdateEntryField(newRowIdx, colName, valueToCopy?.ToString() ?? "");
-
-                    newlyCreatedCells.Add(targetCell);
+                    targetCell = DiaryTable.Rows[newRowIdx].Cells[colName];
                 }
-            }
 
-            
-            if (newlyCreatedCells.Count > 0)
-            {
-                DiaryTable.ClearSelection();
+                targetCell.Value = valueToCopy;
 
                 
-                foreach (var cell in newlyCreatedCells)
-                {
-                    cell.Selected = true;
-                }
+                _diaryManager.UpdateEntryField(targetCell.RowIndex, colName, valueToCopy?.ToString() ?? "");
 
-               
-                DiaryTable.CurrentCell = newlyCreatedCells.Last();
+                newlyCreatedCells.Add(targetCell);
+            }
+
+            DiaryTable.ClearSelection();
+            foreach (var cell in newlyCreatedCells)
+            {
+                cell.Selected = true;
             }
 
             SaveDataToXml();
