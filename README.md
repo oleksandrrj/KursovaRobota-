@@ -1,2 +1,3 @@
-# Kursova-Diary-rezerv
-Резерв курсової роботи 
+# Kursova-Diary
+
+Репозиторій Курсової роботи
